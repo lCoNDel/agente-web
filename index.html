@@ -1,853 +1,492 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Consultor UE - Asistente Inteligente</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Asistente Empresarial | Open AI</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
   <style>
+    :root {
+      --primary-color: #2563eb;
+      --dark-bg: #0f172a;
+      --light-bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-dark: #1e293b;
+      --text-light: #64748b;
+      --border-radius: 12px;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
     }
-    
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow-x: hidden;
-    }
-    
+
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-      color: #1e293b;
-      line-height: 1.5;
+      background-color: var(--light-bg);
+      color: var(--text-dark);
       min-height: 100vh;
       display: flex;
-      justify-content: center;
-      align-items: center;
+      flex-direction: column;
       padding: 20px;
-      overflow: auto;
     }
-    
+
     .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      max-width: 800px;
-      text-align: center;
-      padding: 40px;
-      position: relative;
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: 24px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-      backdrop-filter: blur(5px);
-      margin: 20px;
+      gap: 30px;
     }
-    
-    .eu-flag {
-      margin-bottom: 30px;
-      animation: float 4s ease-in-out infinite;
-      position: relative;
-      width: 140px;
-      height: 140px;
-    }
-    
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-    
-    .flag-circle {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #003399 0%, #0044aa 100%);
-      border-radius: 50%;
+
+    header {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      position: relative;
-      overflow: hidden;
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
-    
-    .stars-container {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-    }
-    
-    .star {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      color: #ffcc00;
-      font-size: 1rem;
-      transform-origin: center;
-      margin-top: -0.5rem;
-      margin-left: -0.5rem;
-    }
-    
-    .star:nth-child(1) { transform: rotate(0deg) translate(50px); }
-    .star:nth-child(2) { transform: rotate(30deg) translate(50px); }
-    .star:nth-child(3) { transform: rotate(60deg) translate(50px); }
-    .star:nth-child(4) { transform: rotate(90deg) translate(50px); }
-    .star:nth-child(5) { transform: rotate(120deg) translate(50px); }
-    .star:nth-child(6) { transform: rotate(150deg) translate(50px); }
-    .star:nth-child(7) { transform: rotate(180deg) translate(50px); }
-    .star:nth-child(8) { transform: rotate(210deg) translate(50px); }
-    .star:nth-child(9) { transform: rotate(240deg) translate(50px); }
-    .star:nth-child(10) { transform: rotate(270deg) translate(50px); }
-    .star:nth-child(11) { transform: rotate(300deg) translate(50px); }
-    .star:nth-child(12) { transform: rotate(330deg) translate(50px); }
-    
-    .title-section {
-      margin-bottom: 35px;
+
+    /* Logo y botón info en línea */
+    .logo {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      max-width: 600px;
-    }
-    
-    h1 {
-      font-size: 2.8rem;
-      margin-bottom: 15px;
-      font-weight: 800;
-      background: linear-gradient(90deg, #2563eb, #1d4ed8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -0.5px;
-      width: 100%;
-    }
-    
-    .subtitle {
-      font-size: 1.25rem;
-      color: #64748b;
-      line-height: 1.6;
-      width: 100%;
-      max-width: 600px;
-      margin-top: 10px;
-    }
-    
-    .access-container {
-      margin-top: 25px;
-      animation: fadeInUp 0.8s ease-out;
-      width: 100%;
-      max-width: 500px;
-    }
-    
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .access-btn {
-      background: linear-gradient(90deg, #2563eb, #1d4ed8);
-      color: white;
-      border: none;
-      border-radius: 50px;
-      padding: 18px 45px;
-      font-size: 1.3rem;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
-      display: inline-flex;
       align-items: center;
       gap: 12px;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      width: auto;
     }
-    
-    .access-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
-    }
-    
-    .access-btn:active {
-      transform: translateY(0);
-      box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
-    }
-    
-    .chat-container {
-      background-color: white;
-      border-radius: 18px;
-      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
-      overflow: hidden;
-      display: none;
-      flex-direction: column;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 100;
-      width: 90%;
-      max-width: 900px;
-      height: 85vh;
-      max-height: 700px;
-      overflow: hidden;
-    }
-    
-    .chat-container.active {
-      display: flex;
-    }
-    
-    .chat-header {
-      background: linear-gradient(90deg, #2563eb, #1d4ed8);
+
+    .logo-icon {
+      background: var(--primary-color);
       color: white;
-      padding: 18px 25px;
-      display: flex;
-      align-items: center;
-      position: relative;
-      z-index: 10;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    
-    .chat-header-left {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      width: 100%;
-      justify-content: flex-start;
-      max-width: 100%;
-      overflow: hidden;
-    }
-    
-    .chat-header h2 {
-      font-weight: 600;
-      font-size: 1.3rem;
-      color: white;
-      margin: 0;
-      max-width: calc(100% - 120px);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    
-    .info-btn {
-      background: rgba(255, 255, 255, 0.2);
-      border: none;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      color: white;
-      font-size: 1rem;
-      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .logo-text {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-text span {
+      color: var(--primary-color);
+    }
+
+    /* Botón info movido aquí para estar junto al texto */
+    .info-btn {
+      background: var(--card-bg);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow);
       transition: all 0.3s ease;
-      flex-shrink: 0;
+      color: var(--text-dark);
     }
-    
+
     .info-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
-      transform: scale(1.05);
+      background: var(--primary-color);
+      color: white;
+      transform: translateY(-2px);
     }
-    
-    .info-btn:active {
-      transform: scale(0.95);
+
+    /* Header acciones removidas para que el botón esté dentro del logo-text */
+    .actions {
+      /* eliminado el display para ocultar */
+      display: none;
     }
-    
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 30px;
+    }
+
+    @media (max-width: 900px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .chat-container {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 600px;
+    }
+
+    .chat-header {
+      padding: 20px;
+      background: var(--dark-bg);
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chat-header i {
+      color: var(--primary-color);
+      font-size: 20px;
+    }
+
+    .chat-box {
+      flex: 1;
+      overflow: hidden;
+    }
+
     agent-standard {
       width: 100%;
       height: 100%;
-      flex: 1;
       display: block;
-      max-width: 100%;
-      overflow: hidden;
     }
-    
+
+    .info-sidebar {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    /* Secciones "capabilities" y "stats" eliminadas: removidas en HTML */
+
+    .sidebar-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-title i {
+      color: var(--primary-color);
+    }
+
+    /* ... resto del estilo permanece para consejos y demás ... */
+
     .info-modal {
-      display: none;
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: 1000;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
       align-items: center;
       justify-content: center;
+      z-index: 1000;
       backdrop-filter: blur(4px);
-      padding: 20px;
     }
-    
-    .info-modal.active {
-      display: flex;
-    }
-    
+
     .modal-content {
       background: white;
-      border-radius: 20px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      border-radius: var(--border-radius);
       width: 90%;
       max-width: 500px;
-      padding: 30px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+
+    .info-modal.active .modal-content {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .modal-header {
+      background: var(--dark-bg);
+      color: white;
+      padding: 20px;
+      text-align: center;
       position: relative;
-      animation: modalAppear 0.4s ease-out;
-      margin: auto;
     }
-    
-    @keyframes modalAppear {
-      from { opacity: 0; transform: translateY(30px) scale(0.95); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    
+
     .close-btn {
       position: absolute;
       top: 15px;
-      right: 15px;
-      background: transparent;
-      border: none;
-      font-size: 1.8rem;
-      color: #94a3b8;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-    }
-    
-    .close-btn:hover {
-      color: #2563eb;
-      background: #f1f5f9;
-    }
-    
-    .modal-header {
-      text-align: center;
-      margin-bottom: 20px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #e2e8f0;
-    }
-    
-    .modal-header h3 {
-      font-size: 1.5rem;
-      color: #1e293b;
-      margin: 0;
-    }
-    
-    .creator-info {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    
-    .creator-text {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      font-size: 1.1rem;
-      color: #1e293b;
-    }
-    
-    .info-icon {
-      background-color: #2563eb;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 0.9rem;
-      flex-shrink: 0;
-    }
-    
-    .social-links {
-      display: flex;
-      gap: 25px;
-      justify-content: center;
-      margin: 30px 0;
-    }
-    
-    .social-links a {
-      color: #1e293b;
-      font-size: 1.8rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 55px;
-      height: 55px;
-      border-radius: 50%;
-      background: #f1f5f9;
-      transition: all 0.3s ease;
-      text-decoration: none;
-    }
-    
-    .social-links a:hover {
-      background: #2563eb;
-      color: white;
-      transform: translateY(-5px);
-    }
-    
-    .credits {
-      font-size: 1rem;
-      color: #64748b;
-      text-align: center;
-      padding-top: 18px;
-      border-top: 1px solid #e2e8f0;
-      margin-top: 18px;
-    }
-    
-    .back-btn {
-      background: transparent;
-      border: none;
-      color: white;
-      font-size: 1.3rem;
-      cursor: pointer;
-      margin-right: 12px;
-      transition: all 0.3s ease;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    
-    .back-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: scale(1.05);
-    }
-    
-    .decoration {
-      position: absolute;
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      background: linear-gradient(120deg, rgba(37, 99, 235, 0.08), rgba(29, 78, 216, 0.04));
-      z-index: -1;
-      pointer-events: none;
-    }
-    
-    .decoration:nth-child(1) {
-      top: -60px;
-      right: -60px;
-      width: 300px;
-      height: 300px;
-    }
-    
-    .decoration:nth-child(2) {
-      bottom: -80px;
-      left: -70px;
-      width: 260px;
-      height: 260px;
-    }
-    
-    .close-chat-btn {
-      display: none;
-      position: absolute;
-      top: 20px;
       right: 20px;
       background: transparent;
       border: none;
       color: white;
-      font-size: 1.5rem;
+      font-size: 28px;
       cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
       transition: all 0.3s ease;
+    }
+
+    .close-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-body {
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      align-items: center; /* Centrar contenido horizontalmente */
+      text-align: center; /* Centrar texto */
+    }
+
+    .creator-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      background: #f1f5f9;
+      border-radius: 10px;
+      justify-content: center; /* Centrar horizontalmente el flex */
+      width: 100%;
+    }
+
+    .info-icon {
+      background: var(--primary-color);
+      color: white;
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      z-index: 11;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
     }
-    
-    .close-chat-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: scale(1.1);
+
+    .creator-text span {
+      font-weight: 500;
+      color: var(--text-dark);
+      display: block;
+      width: 100%;
+      text-align: center; /* Centrar texto dentro del span */
     }
-    
-    /* Responsive para pantallas medianas */
-    @media (max-width: 900px) {
-      .container {
-        max-width: 700px;
-        padding: 30px;
-      }
-      
-      h1 {
-        font-size: 2.4rem;
-      }
-      
-      .subtitle {
-        font-size: 1.15rem;
-      }
-      
-      .eu-flag {
-        width: 120px;
-        height: 120px;
-      }
-      
-      .star {
-        font-size: 0.85rem;
-        margin-top: -0.42rem;
-        margin-left: -0.42rem;
-      }
-      
-      .star:nth-child(1) { transform: rotate(0deg) translate(45px); }
-      .star:nth-child(2) { transform: rotate(30deg) translate(45px); }
-      .star:nth-child(3) { transform: rotate(60deg) translate(45px); }
-      .star:nth-child(4) { transform: rotate(90deg) translate(45px); }
-      .star:nth-child(5) { transform: rotate(120deg) translate(45px); }
-      .star:nth-child(6) { transform: rotate(150deg) translate(45px); }
-      .star:nth-child(7) { transform: rotate(180deg) translate(45px); }
-      .star:nth-child(8) { transform: rotate(210deg) translate(45px); }
-      .star:nth-child(9) { transform: rotate(240deg) translate(45px); }
-      .star:nth-child(10) { transform: rotate(270deg) translate(45px); }
-      .star:nth-child(11) { transform: rotate(300deg) translate(45px); }
-      .star:nth-child(12) { transform: rotate(330deg) translate(45px); }
-      
-      .chat-container {
-        width: 95%;
-        max-width: 95%;
-      }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 10px 0;
     }
-    
-    /* Responsive para pantallas pequeñas */
-    @media (max-width: 768px) {
-      .container {
-        padding: 25px 20px;
-        border-radius: 20px;
-        margin: 15px;
-      }
-      
-      h1 {
-        font-size: 2rem;
-      }
-      
-      .subtitle {
-        font-size: 1.05rem;
-      }
-      
-      .eu-flag {
-        width: 100px;
-        height: 100px;
-      }
-      
-      .star {
-        font-size: 0.7rem;
-        margin-top: -0.35rem;
-        margin-left: -0.35rem;
-      }
-      
-      .star:nth-child(1) { transform: rotate(0deg) translate(35px); }
-      .star:nth-child(2) { transform: rotate(30deg) translate(35px); }
-      .star:nth-child(3) { transform: rotate(60deg) translate(35px); }
-      .star:nth-child(4) { transform: rotate(90deg) translate(35px); }
-      .star:nth-child(5) { transform: rotate(120deg) translate(35px); }
-      .star:nth-child(6) { transform: rotate(150deg) translate(35px); }
-      .star:nth-child(7) { transform: rotate(180deg) translate(35px); }
-      .star:nth-child(8) { transform: rotate(210deg) translate(35px); }
-      .star:nth-child(9) { transform: rotate(240deg) translate(35px); }
-      .star:nth-child(10) { transform: rotate(270deg) translate(35px); }
-      .star:nth-child(11) { transform: rotate(300deg) translate(35px); }
-      .star:nth-child(12) { transform: rotate(330deg) translate(35px); }
-      
-      .access-btn {
-        padding: 16px 36px;
-        font-size: 1.15rem;
-      }
-      
-      .chat-container {
-        border-radius: 0;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        transform: none;
-        width: 100%;
-        height: 100%;
-        max-width: 100%;
-        max-height: 100%;
-      }
-      
-      .close-chat-btn {
-        display: block;
-      }
+
+    .social-links a {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dark);
+      font-size: 18px;
+      transition: all 0.3s ease;
+      text-decoration: none;
     }
-    
-    @media (max-width: 480px) {
-      body {
-        padding: 10px;
-      }
-      
-      .container {
-        padding: 20px 15px;
-        border-radius: 16px;
-        margin: 10px;
-      }
-      
-      h1 {
-        font-size: 1.8rem;
-      }
-      
-      .subtitle {
-        font-size: 0.95rem;
-      }
-      
-      .eu-flag {
-        width: 85px;
-        height: 85px;
-        margin-bottom: 20px;
-      }
-      
-      .star {
-        font-size: 0.6rem;
-        margin-top: -0.3rem;
-        margin-left: -0.3rem;
-      }
-      
-      .star:nth-child(1) { transform: rotate(0deg) translate(30px); }
-      .star:nth-child(2) { transform: rotate(30deg) translate(30px); }
-      .star:nth-child(3) { transform: rotate(60deg) translate(30px); }
-      .star:nth-child(4) { transform: rotate(90deg) translate(30px); }
-      .star:nth-child(5) { transform: rotate(120deg) translate(30px); }
-      .star:nth-child(6) { transform: rotate(150deg) translate(30px); }
-      .star:nth-child(7) { transform: rotate(180deg) translate(30px); }
-      .star:nth-child(8) { transform: rotate(210deg) translate(30px); }
-      .star:nth-child(9) { transform: rotate(240deg) translate(30px); }
-      .star:nth-child(10) { transform: rotate(270deg) translate(30px); }
-      .star:nth-child(11) { transform: rotate(300deg) translate(30px); }
-      .star:nth-child(12) { transform: rotate(330deg) translate(30px); }
-      
-      .access-btn {
-        padding: 14px 32px;
-        font-size: 1.1rem;
-      }
-      
-      .chat-header {
-        padding: 14px 16px;
-      }
-      
-      .chat-header h2 {
-        font-size: 1.1rem;
-      }
-      
-      .info-btn {
-        width: 32px;
-        height: 32px;
-      }
-      
-      .modal-content {
-        padding: 20px;
-      }
-      
-      .social-links {
-        margin: 20px 0;
-        gap: 15px;
-      }
-      
-      .social-links a {
-        width: 48px;
-        height: 48px;
-        font-size: 1.5rem;
-      }
+
+    .social-links a:hover {
+      background: var(--primary-color);
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    .credits {
+      text-align: center;
+      color: var(--text-light);
+      font-size: 14px;
+      padding: 20px 0 10px;
+      font-weight: 500;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 0 15px;
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    .highlight {
+      color: var(--primary-color);
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
-  <div class="decoration"></div>
-  <div class="decoration"></div>
-  
   <div class="container">
-    <div class="eu-flag">
-      <div class="flag-circle">
-        <div class="stars-container">
-          <div class="star">★</div>
-          <div class="star">★</div>
-          <div class="star">★</div>
-          <div class="star">★</div>
-          <div class="star">★</div>
-          <div class="star">★</div>
-          <div class="star">★</div>
-          <div class="star">★</div>
-          <div class="star">★</div>
-          <div class="star">★</div>
-          <div class="star">★</div>
-          <div class="star">★</div>
+    <header>
+      <div class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-robot"></i>
         </div>
-      </div>
-    </div>
-    
-    <div class="title-section">
-      <h1>Consultor UE</h1>
-      <p class="subtitle">Asistente especializado en normativas de la Unión Europea.</p>
-    </div>
-    
-    <div class="access-container">
-      <button class="access-btn" id="access-btn" aria-label="Abrir asistente">
-        <i class="fas fa-comments"></i> Acceder al Asistente
-      </button>
-    </div>
-  </div>
-  
-  <div class="chat-container" id="chat-container">
-    <div class="chat-header">
-      <div class="chat-header-left">
-        <button class="back-btn" id="back-btn" aria-label="Volver">
-          <i class="fas fa-arrow-left"></i>
-        </button>
-        <button class="info-btn" id="info-btn" aria-label="Información">
-          <i class="fas fa-info"></i>
-        </button>
-        <h2>Shimmer - Consultor UE (V1.0)</h2>
-      </div>
-      <button class="close-chat-btn" id="close-chat-btn" aria-label="Cerrar chat">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    <agent-standard></agent-standard>
-  </div>
-  
-  <div class="info-modal" id="info-modal">
-    <div class="modal-content">
-      <button class="close-btn" id="close-btn" aria-label="Cerrar">&times;</button>
-      <div class="modal-header">
-        <h3>Información del Proyecto</h3>
-      </div>
-      <div class="creator-info">
-        <div class="creator-text">
-          <div class="info-icon">
+        <!-- Contenedor con texto y botón info juntos -->
+        <div class="logo-text">
+          Asistente <span>IT</span>
+          <button class="info-btn" id="info-btn" aria-label="Información">
             <i class="fas fa-info"></i>
-          </div>
-          <span>Diseño y programación: Luis Conde</span>
+          </button>
         </div>
       </div>
-      
-      <div class="social-links">
-        <a href="https://www.linkedin.com/in/luiscondeb" title="LinkedIn" target="_blank" rel="noopener">
-          <i class="fab fa-linkedin-in"></i>
-        </a>
-        <a href="https://github.com/lCoNDel" title="GitHub" target="_blank" rel="noopener">
-          <i class="fab fa-github"></i>
-        </a>
-        <a href="mailto:luis.conde.b@gmail.com" title="Email" target="_blank" rel="noopener">
-          <i class="fas fa-envelope"></i>
-        </a>
+      <!-- Sección actions oculta (botón movido) -->
+      <div class="actions"></div>
+    </header>
+
+    <div class="main-content">
+      <div class="chat-container">
+        <div class="chat-header">
+          <i class="fas fa-comments"></i>
+          <div>C-IT ' Shimmer (Versión 1.2.5)</div>
+        </div>
+        <div class="chat-box">
+          <!-- El chat se cargará aquí -->
+          <script type="module">
+            import Agent from "https://cdn.jsdelivr.net/npm/@agent-embed/js@latest/dist/web.js";
+            Agent.initStandard({
+              agentName: "Assistant OpenAI-dd078",
+              stream: true,
+              persistSession: false,
+              filterResponse: function (response) {
+                const citationRegex = /【d+:d+†[^【】]+】/g;
+                return response.replace(citationRegex, "");
+              },
+            });
+          </script>
+          <agent-standard style="width: 100%; height: 100%;"></agent-standard>
+        </div>
       </div>
-      
-      <div class="credits">
-        Powered by Open AI & Predictabledialogs
+
+      <div class="info-sidebar">
+
+        <div>
+          <h3 class="sidebar-title"><i class="fas fa-lightbulb"></i> Consejos de uso</h3>
+          <ul
+            style="
+              padding-left: 20px;
+              color: var(--text-light);
+              display: flex;
+              flex-direction: column;
+              gap: 10px;
+              margin-top: 10px;
+            "
+          >
+		    <li>Usa el asistente como complemento, nunca como reemplazo!</li>
+            <li>Sé lo más específico y técnico que puedas en tus preguntas para obtener mejores resultados</li>
+            <li>Siempre que sea posible, especifica la fuente a consultar (BD Interna o Documentación)</li>
+			<li>Sé educado!, por lo que pueda pasar a futuro...</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 
-  <script type="module">
-    import Agent from 'https://cdn.jsdelivr.net/npm/@agent-embed/js@latest/dist/web.js'
-    
-    let agentInitialized = false;
-    
-    const accessBtn = document.getElementById('access-btn');
-    const chatContainer = document.getElementById('chat-container');
-    const infoBtn = document.getElementById('info-btn');
-    const infoModal = document.getElementById('info-modal');
-    const closeBtn = document.getElementById('close-btn');
-    const backBtn = document.getElementById('back-btn');
-    const closeChatBtn = document.getElementById('close-chat-btn');
-    
-    function initChatbot() {
-      if (agentInitialized) return;
-      
-      Agent.initStandard({
-        agentName: "Assistant OpenAI-d3d07",
-        stream: true,
-        persistSession: false,
-        filterResponse: function(response) {
-          const citationRegex = /【d+:d+†[^【】]+】/g;
-          return response.replace(citationRegex, "");
-        }
-      });
-      
-      agentInitialized = true;
-    }
-    
-    accessBtn.addEventListener('click', function() {
-      chatContainer.classList.add('active');
-      initChatbot();
-      
-      const originalHTML = this.innerHTML;
-      this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cargando...';
-      this.disabled = true;
-      
+  <!-- Módulo de Información -->
+  <div class="info-modal" id="info-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">Información del Proyecto</h3>
+        <button class="close-btn" id="close-btn" aria-label="Cerrar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="creator-info">
+          <div class="info-icon">
+            <i class="fas fa-info"></i>
+          </div>
+          <div class="creator-text">
+            <span>Diseño y programación: Luis Conde</span>
+          </div>
+        </div>
+
+        <div class="social-links">
+          <a
+            href="https://www.linkedin.com/in/luiscondeb"
+            title="LinkedIn"
+            target="_blank"
+            rel="noopener"
+            ><i class="fab fa-linkedin-in"></i
+          ></a>
+          <a
+            href="https://github.com/lCoNDel"
+            title="GitHub"
+            target="_blank"
+            rel="noopener"
+            ><i class="fab fa-github"></i
+          ></a>
+          <a
+            href="mailto:luis.conde.b@gmail.com"
+            title="Email"
+            target="_blank"
+            rel="noopener"
+            ><i class="fas fa-envelope"></i
+          ></a>
+        </div>
+
+        <div class="credits">Powered by Open AI and Predictable</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+  <p>
+    Luis Conde Blanco &copy; 2025 |
+    <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener noreferrer" class="highlight">
+      Licencia CC BY-NC 4.0
+    </a>
+  </p>
+</footer>
+
+
+  <script>
+    //modal de información
+    document.getElementById("info-btn").addEventListener("click", function () {
+      const modal = document.getElementById("info-modal");
+      modal.style.display = "flex";
       setTimeout(() => {
-        this.style.display = 'none';
-      }, 1500);
+        modal.classList.add("active");
+      }, 10);
     });
-    
-    backBtn.addEventListener('click', function() {
-      chatContainer.classList.remove('active');
-      accessBtn.style.display = 'inline-flex';
-      accessBtn.disabled = false;
-      accessBtn.innerHTML = '<i class="fas fa-comments"></i> Acceder al Asistente';
+
+    document.getElementById("close-btn").addEventListener("click", function () {
+      const modal = document.getElementById("info-modal");
+      modal.classList.remove("active");
+      setTimeout(() => {
+        modal.style.display = "none";
+      }, 300);
     });
-    
-    closeChatBtn.addEventListener('click', function() {
-      chatContainer.classList.remove('active');
-      accessBtn.style.display = 'inline-flex';
-      accessBtn.disabled = false;
-      accessBtn.innerHTML = '<i class="fas fa-comments"></i> Acceder al Asistente';
-    });
-    
-    infoBtn.addEventListener('click', function() {
-      infoModal.classList.add('active');
-    });
-    
-    closeBtn.addEventListener('click', function() {
-      infoModal.classList.remove('active');
-    });
-    
-    infoModal.addEventListener('click', function(e) {
-      if (e.target === infoModal) {
-        infoModal.classList.remove('active');
+
+    //cerrar modal al hacer clic fuera del contenido
+    document.getElementById("info-modal").addEventListener("click", function (e) {
+      if (e.target === this) {
+        this.classList.remove("active");
+        setTimeout(() => {
+          this.style.display = "none";
+        }, 300);
       }
-    });
-    
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && infoModal.classList.contains('active')) {
-        infoModal.classList.remove('active');
-      }
-    });
-    
-    // Prevenir el zoom innecesario en dispositivos móviles
-    document.addEventListener('touchmove', function(event) {
-      if (event.scale !== 1) { 
-        event.preventDefault(); 
-      }
-    }, { passive: false });
-    
-    // Prevenir doble toque para zoom
-    let lastTouchEnd = 0;
-    document.addEventListener('touchend', function(event) {
-      const now = (new Date()).getTime();
-      if (now - lastTouchEnd <= 300) {
-        event.preventDefault();
-      }
-      lastTouchEnd = now;
-    }, false);
-    
-    // Prevenir zoom en campos de entrada
-    document.querySelectorAll('input, textarea, select').forEach(input => {
-      input.addEventListener('focus', function() {
-        document.documentElement.style.touchAction = 'manipulation';
-      });
-      input.addEventListener('blur', function() {
-        document.documentElement.style.touchAction = '';
-      });
     });
   </script>
 </body>
