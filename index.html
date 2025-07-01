@@ -1,17 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Shimmer</title>
-	
-<link rel="icon" href="https://media.lordicon.com/icons/wired/outline/1121-iota-internet-of-things.gif" type="image/gif">
-<link rel="apple-touch-icon" href="https://media.lordicon.com/icons/wired/outline/1121-iota-internet-of-things.gif">
-	
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
+  <link rel="icon" href="https://media.lordicon.com/icons/wired/outline/1121-iota-internet-of-things.gif" type="image/gif" />
+  <link rel="apple-touch-icon" href="https://media.lordicon.com/icons/wired/outline/1121-iota-internet-of-things.gif" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     :root {
       --primary-color: #2563eb;
@@ -57,7 +53,6 @@
       border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
 
-    /* Logo y botón info en línea */
     .logo {
       display: flex;
       align-items: center;
@@ -90,7 +85,6 @@
       color: var(--primary-color);
     }
 
-    /* Botón info movido aquí para estar junto al texto */
     .info-btn {
       background: var(--card-bg);
       border: none;
@@ -112,9 +106,7 @@
       transform: translateY(-2px);
     }
 
-    /* Header acciones removidas para que el botón esté dentro del logo-text */
     .actions {
-      /* eliminado el display para ocultar */
       display: none;
     }
 
@@ -154,15 +146,28 @@
       font-size: 20px;
     }
 
+    /* Eliminar todos los scrolls en el chat */
     .chat-box {
       flex: 1;
-      overflow: hidden;
+      overflow: hidden !important;
+      white-space: normal !important;
+      word-break: break-word !important;
     }
 
     agent-standard {
       width: 100%;
       height: 100%;
       display: block;
+      overflow: hidden !important;
+      white-space: normal !important;
+      word-break: break-word !important;
+
+      -ms-overflow-style: none !important; /* IE y Edge */
+      scrollbar-width: none !important; /* Firefox */
+    }
+
+    agent-standard::-webkit-scrollbar {
+      display: none !important; /* Chrome, Safari y Opera */
     }
 
     .info-sidebar {
@@ -174,8 +179,6 @@
       flex-direction: column;
       gap: 25px;
     }
-
-    /* Secciones "capabilities" y "stats" eliminadas: removidas en HTML */
 
     .sidebar-title {
       font-size: 18px;
@@ -189,8 +192,6 @@
     .sidebar-title i {
       color: var(--primary-color);
     }
-
-    /* ... resto del estilo permanece para consejos y demás ... */
 
     .info-modal {
       position: fixed;
@@ -258,8 +259,8 @@
       display: flex;
       flex-direction: column;
       gap: 25px;
-      align-items: center; /* Centrar contenido horizontalmente */
-      text-align: center; /* Centrar texto */
+      align-items: center;
+      text-align: center;
     }
 
     .creator-info {
@@ -269,7 +270,7 @@
       padding: 15px;
       background: #f1f5f9;
       border-radius: 10px;
-      justify-content: center; /* Centrar horizontalmente el flex */
+      justify-content: center;
       width: 100%;
     }
 
@@ -290,7 +291,7 @@
       color: var(--text-dark);
       display: block;
       width: 100%;
-      text-align: center; /* Centrar texto dentro del span */
+      text-align: center;
     }
 
     .social-links {
@@ -349,7 +350,6 @@
         <div class="logo-icon">
           <i class="fas fa-robot"></i>
         </div>
-        <!-- Contenedor con texto y botón info juntos -->
         <div class="logo-text">
           Asistente <span>IT</span>
           <button class="info-btn" id="info-btn" aria-label="Información">
@@ -357,7 +357,6 @@
           </button>
         </div>
       </div>
-      <!-- Sección actions oculta (botón movido) -->
       <div class="actions"></div>
     </header>
 
@@ -365,10 +364,9 @@
       <div class="chat-container">
         <div class="chat-header">
           <i class="fas fa-comments"></i>
-          <div>C-IT ' Shimmer (Versión 0.2.6)</div>
+          <div>C-IT ' Shimmer (Versión 0.2.7)</div>
         </div>
         <div class="chat-box">
-          <!-- El chat se cargará aquí -->
           <script type="module">
             import Agent from "https://cdn.jsdelivr.net/npm/@agent-embed/js@latest/dist/web.js";
             Agent.initStandard({
@@ -386,7 +384,6 @@
       </div>
 
       <div class="info-sidebar">
-
         <div>
           <h3 class="sidebar-title"><i class="fas fa-lightbulb"></i> Consejos de uso</h3>
           <ul
@@ -399,18 +396,16 @@
               margin-top: 10px;
             "
           >
-	    <li>Usa el asistente como complemento, nunca como reemplazo!                                  </li>
+            <li>Usa el asistente como complemento, nunca como reemplazo!</li>
             <li>Sé lo más específico y técnico que puedas en tus preguntas para obtener mejores resultados</li>
-            <li>Siempre que sea posible, especifica la fuente a consultar (BD Interna o Documentación)    </li>
-	    <li>Sé educado!, por lo que pueda pasar a futuro...                                           </li>
-		  
+            <li>Siempre que sea posible, especifica la fuente a consultar (BD Interna o Documentación)</li>
+            <li>Sé educado!, por lo que pueda pasar a futuro...</li>
           </ul>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Módulo de Información -->
   <div class="info-modal" id="info-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal-content">
       <div class="modal-header">
@@ -428,25 +423,13 @@
         </div>
 
         <div class="social-links">
-          <a
-            href="https://www.linkedin.com/in/luiscondeb"
-            title="LinkedIn"
-            target="_blank"
-            rel="noopener"
+          <a href="https://www.linkedin.com/in/luiscondeb" title="LinkedIn" target="_blank" rel="noopener"
             ><i class="fab fa-linkedin-in"></i
           ></a>
-          <a
-            href="https://github.com/lCoNDel"
-            title="GitHub"
-            target="_blank"
-            rel="noopener"
+          <a href="https://github.com/lCoNDel" title="GitHub" target="_blank" rel="noopener"
             ><i class="fab fa-github"></i
           ></a>
-          <a
-            href="mailto:luis.conde.b@gmail.com"
-            title="Email"
-            target="_blank"
-            rel="noopener"
+          <a href="mailto:luis.conde.b@gmail.com" title="Email" target="_blank" rel="noopener"
             ><i class="fas fa-envelope"></i
           ></a>
         </div>
@@ -457,17 +440,19 @@
   </div>
 
   <footer>
-  <p>
-    Luis Conde Blanco &copy; 2025 |
-    <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener noreferrer" class="highlight">
-      Licencia CC BY-NC 4.0
-    </a>
-  </p>
-</footer>
-
+    <p>
+      Luis Conde Blanco &copy; 2025 |
+      <a
+        href="https://creativecommons.org/licenses/by-nc/4.0/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="highlight"
+        >Licencia CC BY-NC 4.0</a
+      >
+    </p>
+  </footer>
 
   <script>
-    //modal de información
     document.getElementById("info-btn").addEventListener("click", function () {
       const modal = document.getElementById("info-modal");
       modal.style.display = "flex";
@@ -484,7 +469,6 @@
       }, 300);
     });
 
-    //cerrar modal al hacer clic fuera del contenido
     document.getElementById("info-modal").addEventListener("click", function (e) {
       if (e.target === this) {
         this.classList.remove("active");
